@@ -1,36 +1,37 @@
+#ifndef Z80_H
+#define Z80_H
+
 #include <stdint.h>
-#include "types.h"
 
-#ifndef CPU_H_
-#define CPU_H_
+typedef struct {
+    // Main registers
+    uint8_t A, F;
+    uint8_t B, C;
+    uint8_t D, E;
+    uint8_t H, L;
 
-union register_t {
+    // Alternate register set
+    uint8_t A_alt, F_alt;
+    uint8_t B_alt, C_alt;
+    uint8_t D_alt, E_alt;
+    uint8_t H_alt, L_alt;
 
-};
+    // Index registers
+    uint16_t IX, IY;
 
-struct bank_t {
-    uint8_t a, f;
-    uint8_t b, c;
-    uint8_t d, e;
-    uint8_t h, l;
+    // Stack Pointer and Program Counter
+    uint16_t SP, PC;
 
-};
+    // Interrupt registers
+    uint8_t I, R;
+    uint8_t IFF1, IFF2;
+    uint8_t IM;
 
-struct cpu_t {
+    // Memory (64 KB)
+    uint8_t memory[0x10000];
+} Z80;
 
-  uint16_t mem[0x10000];
-
-  struct bank_t main;
-  struct bank_t alternate;
-
-  uint16_t pc; 
-  uint16_t sp;
-  uint16_t ix;
-  uint16_t ip;
-
-  uint8_t i;
-  uint8_t r;
-};
+void z80_reset(Z80 *cpu);
+void z80_step(Z80 *cpu);
 
 #endif
-
